@@ -7,13 +7,14 @@
   <title>{% block title %}{% if school %}{{ school.name }}{% else %}School{% endif %}{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   {% if school %}
-  <style>
-    :root {
-      --primary: {{ school.primary_color }};
-      --secondary: {{ school.secondary_color }};
-    }
-  </style>
-  {% endif %}
+<style>
+  :root {
+    --primary: {{ school.primary_color }};
+    --secondary: {{ school.secondary_color }};
+    --font: {{ school.font_family }};
+  }
+</style>
+{% endif %}
 </head>
 <body>
 

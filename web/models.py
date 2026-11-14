@@ -10,6 +10,14 @@ class SchoolInfo(models.Model):
     primary_color = models.CharField(max_length=7, default='#1e40af')
     secondary_color = models.CharField(max_length=7, default='#f59e0b')
 
+    font_family = models.CharField(
+    max_length=80, default='Arial, sans-serif',
+    help_text='Example: Georgia, serif')
+    custom_css = models.TextField(
+        blank=True, 
+        help_text='Extra CSS for this school only'
+        )
+
     about = models.TextField(blank=True)
     mission = models.TextField(blank=True)
     head_message = models.TextField(blank=True)
