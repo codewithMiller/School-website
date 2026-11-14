@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% if school %}{{ school.name }}{% else %}School{% endif %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% if school %}
+  <style>
+    :root {
+      --primary: {{ school.primary_color }};
+      --secondary: {{ school.secondary_color }};
+    }
+  </style>
+  {% endif %}
+</head>
+<body>
+
+<header>
+  {% if school.logo %}<img src="{{ school.logo.url }}" alt="{{ school.name }}" height="40">{% endif %}
+  <strong>{{ school.name }}</strong>
+  <nav>
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'about' %}">About</a>
+    <a href="{% url 'academics' %}">Academics</a>
+    <a href="{% url 'admissions' %}">Admissions</a>
+    <a href="{% url 'news_list' %}">News</a>
+    <a href="{% url 'gallery' %}">Gallery</a>
+    <a href="{% url 'staff' %}">Staff</a>
+    <a href="{% url 'contact' %}">Contact</a>
+    <a href="{% url 'apply' %}">Apply Now</a>
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'logout' %}" style="display:inline">
+      {% csrf_token %}
+      <button type="submit">Log out</button>
+    </form>
+    {% endif %}
+  </nav>
+</header>
+
+{% for message in messages %}<p class="alert">{{ message }}</p>{% endfor %}
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <p>{{ school.name }}</p>
+  {% if school.phone %}<p>{{ school.phone }}</p>{% endif %}
+  {% if school.email %}<p>{{ school.email }}</p>{% endif %}
+  {% if school.address %}<p>{{ school.address }}</p>{% endif %}
+</footer>
+
+{% if school.whatsapp %}
+<a href="https://wa.me/{{ school.whatsapp }}" target="_blank" rel="noopener"
+   style="position:fixed;bottom:16px;right:16px">WhatsApp us</a>
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Contact Us</h1>
+{% if school.phone %}<p>Phone: {{ school.phone }}</p>{% endif %}
+{% if school.email %}<p>Email: {{ school.email }}</p>{% endif %}
+{% if school.address %}<p>{{ school.address }}</p>{% endif %}
+{% if school.map_embed_url %}
+  <iframe src="{{ school.map_embed_url }}" width="100%" height="300" loading="lazy"></iframe>
+{% endif %}
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Send Message</button>
+</form>
+{% endblock %}

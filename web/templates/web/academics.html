@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Academics</h1>
+{% for c in classes %}
+  <h2>{{ c.name }}</h2>
+  {{ c.description|linebreaks }}
+{% empty %}<p>No classes added yet.</p>{% endfor %}
+{% endblock %}

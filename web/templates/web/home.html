@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if school.hero_image %}<img src="{{ school.hero_image.url }}" alt="{{ school.name }}" style="max-width:100%">{% endif %}
+<h1>{{ school.name }}</h1>
+<p>{{ school.tagline }}</p>
+<a href="{% url 'apply' %}">Apply Now</a>
+
+<h2>Classes</h2>
+<ul>
+  {% for c in classes %}<li>{{ c.name }}</li>{% empty %}<li>No classes added yet.</li>{% endfor %}
+</ul>
+
+<h2>Latest News</h2>
+{% for item in latest_news %}
+  <h3><a href="{% url 'news_detail' item.pk %}">{{ item.title }}</a></h3>
+  <p>{{ item.body|truncatewords:25 }}</p>
+{% empty %}<p>No news yet.</p>{% endfor %}
+
+<h2>Upcoming Events</h2>
+{% for e in upcoming_events %}
+  <p><strong>{{ e.date|date:"j M Y" }}</strong>: {{ e.title }}{% if e.location %} ({{ e.location }}){% endif %}</p>
+{% empty %}<p>No upcoming events.</p>{% endfor %}
+{% endblock %}

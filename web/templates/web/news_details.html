@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ item.title }}</h1>
+<p>{{ item.created|date:"j M Y" }}</p>
+{% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.title }}" style="max-width:100%">{% endif %}
+{{ item.body|linebreaks }}
+<a href="{% url 'news_list' %}">Back to news</a>
+{% endblock %}

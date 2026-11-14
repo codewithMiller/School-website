@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>About Us</h1>
+{{ school.about|linebreaks }}
+
+<h2>Our Mission</h2>
+{{ school.mission|linebreaks }}
+
+<h2>Message from the Head</h2>
+{% if school.head_photo %}<img src="{{ school.head_photo.url }}" alt="{{ school.head_name }}" width="150">{% endif %}
+{{ school.head_message|linebreaks }}
+<p><strong>{{ school.head_name }}</strong></p>
+{% endblock %}

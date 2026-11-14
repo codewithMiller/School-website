@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Gallery</h1>
+{% for img in images %}
+  <figure>
+    <img src="{{ img.image.url }}" alt="{{ img.caption }}" style="max-width:300px">
+    {% if img.caption %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+  </figure>
+{% empty %}<p>No photos yet.</p>{% endfor %}
+{% endblock %}

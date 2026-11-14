@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Admissions</h1>
+
+<h2>Requirements</h2>
+{{ school.admission_requirements|linebreaks }}
+
+<h2>Fees</h2>
+{{ school.fees_info|linebreaks }}
+
+<a href="{% url 'apply' %}">Apply Online</a>
+{% endblock %}

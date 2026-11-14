@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>News</h1>
+{% for item in news %}
+  <h2><a href="{% url 'news_detail' item.pk %}">{{ item.title }}</a></h2>
+  <p>{{ item.created|date:"j M Y" }}</p>
+  <p>{{ item.body|truncatewords:30 }}</p>
+{% empty %}<p>No news yet.</p>{% endfor %}
+{% endblock %}

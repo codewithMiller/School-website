@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Our Staff</h1>
+{% for s in staff_list %}
+  <div>
+    {% if s.photo %}<img src="{{ s.photo.url }}" alt="{{ s.name }}" width="120">{% endif %}
+    <h3>{{ s.name }}</h3>
+    <p>{{ s.role }}</p>
+    {{ s.bio|linebreaks }}
+  </div>
+{% empty %}<p>No staff added yet.</p>{% endfor %}
+{% endblock %}
