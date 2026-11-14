@@ -1,12 +1,132 @@
+
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>Our Staff</h1>
-{% for s in staff_list %}
-  <div>
-    {% if s.photo %}<img src="{{ s.photo.url }}" alt="{{ s.name }}" width="120">{% endif %}
-    <h3>{{ s.name }}</h3>
-    <p>{{ s.role }}</p>
-    {{ s.bio|linebreaks }}
-  </div>
-{% empty %}<p>No staff added yet.</p>{% endfor %}
+
+<section class="staff-page">
+
+    <!-- HERO -->
+    <section class="staff-hero">
+        <div class="container staff-hero-inner">
+
+            <div>
+                <span class="staff-eyebrow">THE PEOPLE BEHIND THE PURPOSE</span>
+                <h1>Meet the <span>people</span> who make it happen.</h1>
+                <p>
+                    Great schools are built by great people.
+                    Get to know the dedicated individuals who guide,
+                    inspire and support our learning community.
+                </p>
+            </div>
+
+            <div class="staff-hero-mark">
+                <i class="bi bi-people"></i>
+            </div>
+
+        </div>
+
+        <div class="staff-hero-bottom">
+            <div class="container">
+                <span>OUR PEOPLE</span>
+                <span>COMMITTED TO EXCELLENCE</span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- STAFF DIRECTORY -->
+    <section class="staff-directory container">
+
+        <div class="staff-section-heading">
+            <div>
+                <span class="staff-eyebrow">THE TEAM</span>
+                <h2>Dedicated to <span>making a difference.</span></h2>
+            </div>
+
+            <p>
+                Every member of our team contributes to creating
+                an environment where students can learn and thrive.
+            </p>
+        </div>
+
+
+        <div class="staff-grid">
+
+            {% for s in staff_list %}
+
+                <article class="staff-card">
+
+                    <div class="staff-card-photo">
+
+                        {% if s.photo %}
+                            <img src="{{ s.photo.url }}"
+                                 alt="{{ s.name }}"
+                                 loading="lazy">
+                        {% else %}
+                            <div class="staff-photo-placeholder">
+                                <i class="bi bi-person"></i>
+                            </div>
+                        {% endif %}
+
+                        <div class="staff-photo-overlay"></div>
+
+                        <span class="staff-card-index">
+                            {{ forloop.counter|stringformat:"02d" }}
+                        </span>
+
+                    </div>
+
+                    <div class="staff-card-info">
+
+                        <span class="staff-card-label">OUR TEAM</span>
+
+                        <h3>{{ s.name }}</h3>
+
+                        <p class="staff-card-role">{{ s.role }}</p>
+
+                        {% if s.bio %}
+                            <details class="staff-bio">
+                                <summary>
+                                    <span>Discover more</span>
+                                    <i class="bi bi-plus-lg"></i>
+                                </summary>
+
+                                <div class="staff-bio-content">
+                                    {{ s.bio|linebreaks }}
+                                </div>
+                            </details>
+                        {% endif %}
+
+                    </div>
+
+                </article>
+
+            {% empty %}
+
+                <div class="staff-empty">
+                    <i class="bi bi-people"></i>
+                    <h3>Our team will be introduced soon.</h3>
+                    <p>
+                        Staff profiles and information will appear here
+                        as they become available.
+                    </p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- CLOSING SECTION -->
+    <section class="staff-closing">
+        <div class="container">
+            <span class="staff-eyebrow">ONE COMMUNITY. ONE PURPOSE.</span>
+            <h2>Inspired by people.<br><span>Driven by possibility.</span></h2>
+        </div>
+    </section>
+
+</section>
+
 {% endblock %}

@@ -1,8 +1,91 @@
+
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>{{ item.title }}</h1>
-<p>{{ item.created|date:"j M Y" }}</p>
-{% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.title }}" style="max-width:100%">{% endif %}
-{{ item.body|linebreaks }}
-<a href="{% url 'news_list' %}">Back to news</a>
+
+<article class="news-detail-page">
+
+    <div class="container">
+
+        <!-- BREADCRUMB -->
+        <nav class="news-breadcrumb" aria-label="Breadcrumb">
+            <a href="{% url 'news_list' %}">
+                <i class="bi bi-arrow-left"></i>
+                Back to newsroom
+            </a>
+            <span>/</span>
+            <span>Article</span>
+        </nav>
+
+        <!-- ARTICLE HEADER -->
+        <header class="news-article-header">
+
+            <span class="news-eyebrow">FROM OUR NEWSROOM</span>
+
+            <h1>{{ item.title }}</h1>
+
+            <div class="news-article-meta">
+                <span>
+                    <i class="bi bi-calendar3"></i>
+                    {{ item.created|date:"j F Y" }}
+                </span>
+
+                <span class="news-meta-divider"></span>
+
+                <span>
+                    <i class="bi bi-journal-text"></i>
+                    School News
+                </span>
+            </div>
+
+        </header>
+
+        <!-- COVER IMAGE -->
+        {% if item.image %}
+            <figure class="news-article-cover">
+                <img src="{{ item.image.url }}"
+                     alt="{{ item.title }}"
+                     fetchpriority="high">
+            </figure>
+        {% endif %}
+
+        <!-- ARTICLE BODY -->
+        <div class="news-article-layout">
+
+            <div class="news-article-body">
+                {{ item.body|linebreaks }}
+            </div>
+
+            <aside class="news-article-aside">
+                <span class="news-eyebrow">KEEP EXPLORING</span>
+                <h3>There's always more happening.</h3>
+                <p>
+                    Return to our newsroom to discover more stories
+                    and updates from our school community.
+                </p>
+
+                <a href="{% url 'news_list' %}" class="news-aside-link">
+                    Explore more stories
+                    <i class="bi bi-arrow-up-right"></i>
+                </a>
+            </aside>
+
+        </div>
+
+        <!-- ARTICLE END -->
+        <div class="news-article-end">
+            <span></span>
+            <p>END OF STORY</p>
+            <span></span>
+        </div>
+
+        <a href="{% url 'news_list' %}" class="news-back-link">
+            <i class="bi bi-arrow-left"></i>
+            Back to all news
+        </a>
+
+    </div>
+
+</article>
+
 {% endblock %}

@@ -1,9 +1,162 @@
+
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>News</h1>
-{% for item in news %}
-  <h2><a href="{% url 'news_detail' item.pk %}">{{ item.title }}</a></h2>
-  <p>{{ item.created|date:"j M Y" }}</p>
-  <p>{{ item.body|truncatewords:30 }}</p>
-{% empty %}<p>No news yet.</p>{% endfor %}
+
+<section class="news-page">
+
+    <!-- NEWS INTRO -->
+    <section class="news-heading-section">
+        <div class="container news-heading-inner">
+            <div>
+                <span class="news-eyebrow">STORIES FROM OUR COMMUNITY</span>
+                <h1>The <span>Newsroom.</span></h1>
+                <p>
+                    Discover the latest stories, announcements and
+                    moments happening across our school community.
+                </p>
+            </div>
+
+            <div class="news-heading-mark">
+                <i class="bi bi-newspaper"></i>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- AUTOMATIC NEWS CAROUSEL -->
+    <section class="news-featured-section">
+        <div class="container">
+
+            <div class="news-section-top">
+                <div>
+                    <span class="news-eyebrow">IN THE SPOTLIGHT</span>
+                    <h2>Latest stories</h2>
+                </div>
+
+                <span class="news-section-note">
+                    SCHOOL NEWS & UPDATES
+                </span>
+            </div>
+
+            {% if news %}
+
+                <div class="news-carousel" data-news-carousel>
+
+                    <div class="news-carousel-viewport">
+                        <div class="news-carousel-track" data-news-track>
+
+                            {% for item in news %}
+
+                                <article class="news-slide">
+
+                                    <div class="news-slide-image">
+                                        {% if item.image %}
+                                            <img
+                                                src="{{ item.image.url }}"
+                                                alt="{{ item.title }}"
+                                                {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                                            >
+                                        {% else %}
+                                            <div class="news-slide-placeholder">
+                                                <i class="bi bi-image"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="news-slide-overlay"></div>
+
+                                    <div class="news-slide-content">
+
+                                        <div class="news-slide-meta">
+                                            <span class="news-live-label">
+                                                <span></span> SCHOOL UPDATE
+                                            </span>
+
+                                            <span class="news-slide-date">
+                                                <i class="bi bi-calendar3"></i>
+                                                {{ item.created|date:"j M Y" }}
+                                            </span>
+                                        </div>
+
+                                        <div class="news-slide-copy">
+                                            <span class="news-slide-number">
+                                                STORY {{ forloop.counter|stringformat:"02d" }}
+                                            </span>
+
+                                            <h3>{{ item.title }}</h3>
+
+                                            <p>
+                                                {{ item.body|truncatewords:32 }}
+                                            </p>
+
+                                            <a href="{% url 'news_detail' item.pk %}"
+                                               class="news-read-link">
+                                                Read full story
+                                                <i class="bi bi-arrow-up-right"></i>
+                                            </a>
+                                        </div>
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                    <div class="news-carousel-controls">
+
+                        <div class="news-carousel-pagination"
+                             data-news-pagination
+                             aria-label="Choose a news story">
+                        </div>
+
+                        <div class="news-carousel-arrows">
+                            <button type="button"
+                                    data-news-prev
+                                    aria-label="Previous story">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+
+                            <button type="button"
+                                    data-news-next
+                                    aria-label="Next story">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <p class="news-carousel-status" data-news-status aria-live="polite"></p>
+
+                </div>
+
+            {% else %}
+
+                <div class="news-empty">
+                    <i class="bi bi-newspaper"></i>
+                    <h3>Nothing to report just yet.</h3>
+                    <p>
+                        Our latest stories and announcements will appear here.
+                        Please check back soon.
+                    </p>
+                </div>
+
+            {% endif %}
+
+        </div>
+    </section>
+
+    <!-- CLOSING STRIP -->
+    <section class="news-footer-strip">
+        <div class="container">
+            <span>MORE THAN NEWS.</span>
+            <p>Every story is part of our school's journey.</p>
+        </div>
+    </section>
+
+</section>
+
 {% endblock %}

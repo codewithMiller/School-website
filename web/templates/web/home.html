@@ -1,23 +1,73 @@
 {% extends 'base.html' %}
-{% block content %}
-{% if school.hero_image %}<img src="{{ school.hero_image.url }}" alt="{{ school.name }}" style="max-width:100%">{% endif %}
-<h1>{{ school.name }}</h1>
-<p>{{ school.tagline }}</p>
-<a href="{% url 'apply' %}">Apply Now</a>
+{% block full %}
 
-<h2>Classes</h2>
-<ul>
-  {% for c in classes %}<li>{{ c.name }}</li>{% empty %}<li>No classes added yet.</li>{% endfor %}
-</ul>
+<section class="hero"><div class="container">
+  <div class="copy">
+    <h1>{{ school.tagline|default:school.name }}</h1>
+    <p>{{ school.about|truncatewords:28 }}</p>
+    <div class="cta">
+      <a class="btn btn-solid" href="{% url 'apply' %}">Apply for a place</a>
+      {% if school.whatsapp %}<a class="btn btn-line" href="https://wa.me/{{ school.whatsapp }}?text=Hello, I would like to book a school visit." target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i>Book a visit</a>{% else %}<a class="btn btn-line" href="{% url 'contact' %}">Book a visit</a>{% endif %}
+    </div>
+  </div>
+  <div class="arch"><div>
+    {% if school.hero_image %}<img src="{{ school.hero_image.url }}" alt="{{ school.name }}">{% else %}{{ school.name|slice:":1" }}{% endif %}
+  </div></div>
+</div></section>
 
-<h2>Latest News</h2>
-{% for item in latest_news %}
-  <h3><a href="{% url 'news_detail' item.pk %}">{{ item.title }}</a></h3>
-  <p>{{ item.body|truncatewords:25 }}</p>
-{% empty %}<p>No news yet.</p>{% endfor %}
+<section class="info"><div class="container">
+  {% if school.address %}<div class="i"><i class="bi bi-geo-alt"></i><span>Find us<small>{{ school.address }}</small></span></div>{% endif %}
+  {% if school.phone %}<a class="i" href="tel:{{ school.phone }}"><i class="bi bi-telephone"></i><span>Call the office<small>{{ school.phone }}</small></span></a>{% endif %}
+  <a class="i" href="{% url 'admissions' %}"><i class="bi bi-journal-check"></i><span>Admissions<small>Requirements and fees</small></span></a>
+</div></section>
 
-<h2>Upcoming Events</h2>
-{% for e in upcoming_events %}
-  <p><strong>{{ e.date|date:"j M Y" }}</strong>: {{ e.title }}{% if e.location %} ({{ e.location }}){% endif %}</p>
-{% empty %}<p>No upcoming events.</p>{% endfor %}
+{% if classes %}
+<section class="s"><div class="container">
+  <div class="s-head"><h2>Classes we teach</h2><a class="btn btn-line" href="{% url 'academics' %}">See academics</a></div>
+  <div class="chips">{% for c in classes %}<a href="{% url 'academics' %}">{{ c.name }}</a>{% endfor %}</div>
+</div></section>
+{% endif %}
+
+{% if latest_news %}
+<section class="s alt"><div class="container" data-slider>
+  <div class="s-head"><h2>Latest news</h2>
+    <div class="slider-nav"><button type="button" data-prev aria-label="Previous"><i class="bi bi-arrow-left"></i></button><button type="button" data-next aria-label="Next"><i class="bi bi-arrow-right"></i></button></div>
+  </div>
+  <div class="track">
+    {% for item in latest_news %}
+    <a class="card" href="{% url 'news_detail' item.pk %}">
+      <div class="img">{% if item.image %}<img src="{{ item.image.url }}" alt="">{% else %}<i class="bi bi-newspaper"></i>{% endif %}</div>
+      <div class="body"><time>{{ item.created|date:"j F Y" }}</time><h3>{{ item.title }}</h3><p>{{ item.body|truncatewords:18 }}</p><span class="more">Read more</span></div>
+    </a>
+    {% endfor %}
+  </div>
+</div></section>
+{% endif %}
+
+{% if upcoming_events %}
+<section class="s"><div class="container" data-slider>
+  <div class="s-head"><h2>Coming up</h2>
+    <div class="slider-nav"><button type="button" data-prev aria-label="Previous"><i class="bi bi-arrow-left"></i></button><button type="button" data-next aria-label="Next"><i class="bi bi-arrow-right"></i></button></div>
+  </div>
+  <div class="track">
+    {% for e in upcoming_events %}
+    <div class="ev"><div class="date"><b>{{ e.date|date:"d" }}</b><span>{{ e.date|date:"M" }}</span></div>
+      <div><h3>{{ e.title }}</h3><p>{% if e.location %}{{ e.location }}. {% endif %}{{ e.description|truncatewords:14 }}</p></div></div>
+    {% endfor %}
+  </div>
+</div></section>
+{% endif %}
+
+{% if school.head_message %}
+<section class="s alt"><div class="container note {% if not school.head_photo %}solo{% endif %}">
+  {% if school.head_photo %}<img src="{{ school.head_photo.url }}" alt="{{ school.head_name }}">{% endif %}
+  <div><blockquote>{{ school.head_message|truncatewords:45 }}</blockquote><cite>{{ school.head_name }}, Head of School</cite></div>
+</div></section>
+{% endif %}
+
+<section class="s"><div class="container"><div class="band">
+  <h2>Places are open. Start your child's application today.</h2>
+  <a class="btn btn-gold" href="{% url 'apply' %}">Apply now</a>
+</div></div></section>
+
 {% endblock %}

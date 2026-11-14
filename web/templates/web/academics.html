@@ -1,8 +1,98 @@
+
 {% extends 'base.html' %}
+
+{% block title %}Academics | {{ school.name }}{% endblock %}
+
 {% block content %}
-<h1>Academics</h1>
-{% for c in classes %}
-  <h2>{{ c.name }}</h2>
-  {{ c.description|linebreaks }}
-{% empty %}<p>No classes added yet.</p>{% endfor %}
+
+<section class="academic-page">
+
+    <div class="academic-hero">
+        <div class="container">
+            <span class="academic-eyebrow">LEARNING & DEVELOPMENT</span>
+            <h1>Our <span>Academics</span></h1>
+            <p>
+                Discover the learning opportunities and classes
+                that shape our students' educational journey.
+            </p>
+            <div class="academic-hero-line"></div>
+        </div>
+    </div>
+
+    <section class="academic-directory container">
+
+        <div class="academic-section-heading">
+            <div>
+                <span class="academic-eyebrow">EXPLORE OUR CLASSES</span>
+                <h2>Where learning <span>comes alive.</span></h2>
+            </div>
+            <p>
+                Every class is an opportunity to discover new ideas,
+                develop skills and grow.
+            </p>
+        </div>
+
+        <div class="academic-grid">
+
+            {% for c in classes %}
+
+                <article class="academic-card">
+
+                    {% if c.image %}
+                        <img
+                            src="{{ c.image.url }}"
+                            alt=""
+                            class="academic-card-image"
+                            loading="lazy"
+                        >
+                    {% else %}
+                        <div class="academic-card-placeholder"></div>
+                    {% endif %}
+
+                    <div class="academic-card-shade"></div>
+
+                    <div class="academic-card-content">
+
+                        <div class="academic-card-top">
+                            <span class="academic-card-number">
+                                {{ forloop.counter|stringformat:"02d" }}
+                            </span>
+                            <span class="academic-card-label">
+                                OUR CLASSES
+                            </span>
+                        </div>
+
+                        <div class="academic-card-bottom">
+                            <h3>{{ c.name }}</h3>
+
+                            {% if c.description %}
+                                <div class="academic-card-description">
+                                    {{ c.description|linebreaks }}
+                                </div>
+                            {% endif %}
+
+                            <div class="academic-card-accent"></div>
+                        </div>
+
+                    </div>
+                </article>
+
+            {% empty %}
+
+                <div class="academic-empty">
+                    <i class="bi bi-journal-bookmark"></i>
+                    <h3>Classes coming soon</h3>
+                    <p>
+                        Information about our classes will be available here.
+                        Please check back later.
+                    </p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </section>
+
+</section>
+
 {% endblock %}

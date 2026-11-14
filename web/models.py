@@ -68,6 +68,7 @@ class SchoolClass(models.Model):
     """Used for the Academics page and the admission form dropdown."""
     name = models.CharField(max_length=80)
     description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='classes/', blank=True)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:

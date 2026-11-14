@@ -53,7 +53,7 @@ def news_list(request):
 
 def news_detail(request, pk):
     item = get_object_or_404(News, pk=pk, published=True)
-    return render(request, 'web/news_detail.html', {'item': item})
+    return render(request, 'web/news_details.html', {'item': item})
 
 
 def gallery(request):

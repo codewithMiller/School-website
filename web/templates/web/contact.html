@@ -1,16 +1,230 @@
-{% extends 'base.html' %}
-{% block content %}
-<h1>Contact Us</h1>
-{% if school.phone %}<p>Phone: {{ school.phone }}</p>{% endif %}
-{% if school.email %}<p>Email: {{ school.email }}</p>{% endif %}
-{% if school.address %}<p>{{ school.address }}</p>{% endif %}
-{% if school.map_embed_url %}
-  <iframe src="{{ school.map_embed_url }}" width="100%" height="300" loading="lazy"></iframe>
-{% endif %}
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Send Message</button>
-</form>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="contact-page">
+
+    <!-- HERO -->
+    <section class="contact-hero">
+        <div class="container contact-hero-inner">
+
+            <div class="contact-hero-copy">
+                <span class="contact-eyebrow">WE'D LOVE TO HEAR FROM YOU</span>
+
+                <h1>Let's start a <span>conversation.</span></h1>
+
+                <p>
+                    Have a question, need some information or want to
+                    learn more about our school? We're here to help.
+                </p>
+
+                <a href="#contact-details" class="contact-hero-link">
+                    Get in touch
+                    <i class="bi bi-arrow-down"></i>
+                </a>
+            </div>
+
+            <div class="contact-hero-art">
+                <div class="contact-art-circle contact-art-circle-one"></div>
+                <div class="contact-art-circle contact-art-circle-two"></div>
+                <div class="contact-art-icon">
+                    <i class="bi bi-envelope-paper"></i>
+                </div>
+                <span>YOUR SCHOOL. YOUR COMMUNITY.</span>
+            </div>
+
+        </div>
+
+        <div class="contact-hero-bottom">
+            <div class="container">
+                <span>CONTACT & ENQUIRIES</span>
+                <span>WE'RE ALWAYS WITHIN REACH</span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CONTACT INFORMATION -->
+    <section class="contact-main container" id="contact-details">
+
+        <div class="contact-section-heading">
+            <span class="contact-eyebrow">CONNECT WITH US</span>
+            <h2>We're just a <span>message away.</span></h2>
+            <p>
+                Reach out through any of the channels below,
+                or send us a message directly.
+            </p>
+        </div>
+
+
+        <div class="contact-layout">
+
+            <!-- LEFT: CONTACT DETAILS -->
+            <div class="contact-information">
+
+                <div class="contact-information-heading">
+                    <h3>Contact information</h3>
+                    <p>Choose the most convenient way to reach us.</p>
+                </div>
+
+                {% if school.phone %}
+                    <div class="contact-info-item">
+                        <span class="contact-info-icon">
+                            <i class="bi bi-telephone"></i>
+                        </span>
+                        <div>
+                            <span class="contact-info-label">PHONE</span>
+                            <a href="tel:{{ school.phone }}">
+                                {{ school.phone }}
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if school.email %}
+                    <div class="contact-info-item">
+                        <span class="contact-info-icon">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+                        <div>
+                            <span class="contact-info-label">EMAIL</span>
+                            <a href="mailto:{{ school.email }}">
+                                {{ school.email }}
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if school.address %}
+                    <div class="contact-info-item">
+                        <span class="contact-info-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </span>
+                        <div>
+                            <span class="contact-info-label">OUR ADDRESS</span>
+                            <p>{{ school.address }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if not school.phone and not school.email and not school.address %}
+                    <div class="contact-no-details">
+                        <i class="bi bi-info-circle"></i>
+                        <p>Contact information will be available soon.</p>
+                    </div>
+                {% endif %}
+
+                <div class="contact-information-footer">
+                    <span class="contact-footer-line"></span>
+                    <p>We look forward to hearing from you.</p>
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT: MESSAGE FORM -->
+            <div class="contact-form-panel">
+
+                <div class="contact-form-heading">
+                    <span class="contact-eyebrow">SEND US A MESSAGE</span>
+                    <h3>How can we help?</h3>
+                    <p>
+                        Fill in the form below and send us your enquiry.
+                    </p>
+                </div>
+
+                <form method="post" class="contact-form">
+                    {% csrf_token %}
+
+                    {{ form.non_field_errors }}
+
+                    {% for field in form %}
+                        <div class="contact-form-field">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                                {% if field.field.required %}
+                                    <span>*</span>
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small>{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <p class="contact-field-error">{{ error }}</p>
+                            {% endfor %}
+
+                        </div>
+                    {% endfor %}
+
+                    <button type="submit" class="contact-submit-button">
+                        Send Message
+                        <i class="bi bi-arrow-up-right"></i>
+                    </button>
+
+                    <p class="contact-form-note">
+                        <i class="bi bi-shield-check"></i>
+                        Your enquiry will be handled with care.
+                    </p>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MAP -->
+    {% if school.map_embed_url %}
+        <section class="contact-map-section">
+
+            <div class="container">
+
+                <div class="contact-map-heading">
+                    <div>
+                        <span class="contact-eyebrow">FIND US</span>
+                        <h2>Come <span>visit us.</span></h2>
+                    </div>
+
+                    {% if school.address %}
+                        <p>
+                            <i class="bi bi-geo-alt"></i>
+                            {{ school.address }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div class="contact-map-frame">
+                    <iframe
+                        src="{{ school.map_embed_url }}"
+                        title="Map showing the school's location"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+            </div>
+
+        </section>
+    {% endif %}
+
+
+    <!-- CLOSING -->
+    <section class="contact-closing">
+        <div class="container">
+            <span class="contact-eyebrow">HERE WHEN YOU NEED US</span>
+            <h2>Every great connection<br><span>starts with a hello.</span></h2>
+        </div>
+    </section>
+
+</section>
+
 {% endblock %}

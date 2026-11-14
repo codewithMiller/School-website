@@ -1,13 +1,167 @@
+
 {% extends 'base.html' %}
-{% block content %}
-<h1>About Us</h1>
-{{ school.about|linebreaks }}
 
-<h2>Our Mission</h2>
-{{ school.mission|linebreaks }}
+{% block title %}About Us | {{ school.name }}{% endblock %}
 
-<h2>Message from the Head</h2>
-{% if school.head_photo %}<img src="{{ school.head_photo.url }}" alt="{{ school.head_name }}" width="150">{% endif %}
-{{ school.head_message|linebreaks }}
-<p><strong>{{ school.head_name }}</strong></p>
+{% block full %}
+
+<!-- Page introduction -->
+<section class="inner-hero">
+  <div class="container">
+    <div class="inner-hero-content">
+      <div class="breadcrumbs">
+        <a href="{% url 'home' %}">Home</a>
+        <i class="bi bi-chevron-right"></i>
+        <span>About Us</span>
+      </div>
+
+      <span class="eyebrow">
+        <i class="bi bi-building"></i> Discover Our School
+      </span>
+
+      <h1>Getting to Know <span>{{ school.name }}</span></h1>
+
+      <p>
+        Every school has a story, a purpose and a vision.
+        Discover the values and leadership that shape our educational community.
+      </p>
+    </div>
+
+    <div class="inner-hero-mark" aria-hidden="true">
+      <i class="bi bi-mortarboard"></i>
+    </div>
+  </div>
+</section>
+
+
+<!-- About the school -->
+{% if school.about %}
+<section class="about-overview s">
+  <div class="container about-overview-grid">
+
+    <div class="about-overview-label">
+      <span class="eyebrow">01 / Our Story</span>
+      <h2>A little about us.</h2>
+      <div class="decor-line"></div>
+      <p>
+        Understanding who we are begins with understanding what we stand for.
+      </p>
+    </div>
+
+    <div class="about-overview-content">
+      <div class="about-text">
+        {{ school.about|linebreaks }}
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endif %}
+
+
+<!-- Mission -->
+{% if school.mission %}
+<section class="mission-section">
+  <div class="container">
+    <div class="mission-panel">
+
+      <div class="mission-icon">
+        <i class="bi bi-bullseye"></i>
+      </div>
+
+      <div class="mission-content">
+        <span class="eyebrow">02 / Our Purpose</span>
+        <h2>Our Mission</h2>
+
+        <div class="mission-text">
+          {{ school.mission|linebreaks }}
+        </div>
+      </div>
+
+      <div class="mission-decoration" aria-hidden="true">
+        <i class="bi bi-quote"></i>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endif %}
+
+
+<!-- Message from the head -->
+{% if school.head_message or school.head_photo or school.head_name %}
+<section class="head-message-section s">
+  <div class="container">
+
+    <div class="s-head head-message-heading">
+      <div>
+        <span class="eyebrow">03 / Leadership</span>
+        <h2>A Message from Our Head</h2>
+      </div>
+      <span class="head-message-index">LEADERSHIP</span>
+    </div>
+
+    <div class="head-message-card">
+
+      <div class="head-message-portrait">
+        {% if school.head_photo %}
+          <img
+            src="{{ school.head_photo.url }}"
+            alt="{% if school.head_name %}{{ school.head_name }}{% else %}Head of school{% endif %}"
+            loading="lazy"
+          >
+        {% else %}
+          <div class="portrait-placeholder" aria-hidden="true">
+            <i class="bi bi-person-fill"></i>
+          </div>
+        {% endif %}
+
+        {% if school.head_name %}
+          <div class="head-name-card">
+            <strong>{{ school.head_name }}</strong>
+            <span>Head of School</span>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="head-message-content">
+        <i class="bi bi-quote message-quote" aria-hidden="true"></i>
+
+        {% if school.head_message %}
+          <div class="head-message-text">
+            {{ school.head_message|linebreaks }}
+          </div>
+        {% else %}
+          <p>
+            Learn more about the leadership guiding our school community.
+          </p>
+        {% endif %}
+
+        {% if school.head_name %}
+          <div class="head-signature">
+            <span class="signature-line"></span>
+            <strong>{{ school.head_name }}</strong>
+            <small>Head of School</small>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endif %}
+
+
+{% if not school.about and not school.mission and not school.head_message and not school.head_photo and not school.head_name %}
+<section class="s">
+  <div class="container">
+    <div class="about-empty">
+      <i class="bi bi-info-circle"></i>
+      <h2>Our story is being prepared.</h2>
+      <p>More information about our school will be available here soon.</p>
+    </div>
+  </div>
+</section>
+{% endif %}
+
 {% endblock %}

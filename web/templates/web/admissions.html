@@ -1,12 +1,173 @@
+
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>Admissions</h1>
 
-<h2>Requirements</h2>
-{{ school.admission_requirements|linebreaks }}
+<section class="admissions-page">
 
-<h2>Fees</h2>
-{{ school.fees_info|linebreaks }}
+    <!-- HERO -->
+    <section class="admissions-hero">
+        <div class="admissions-hero-image">
+            <!-- Replace this with your chosen admissions photograph -->
+            <img src="YOUR_ADMISSIONS_IMAGE_URL_HERE"
+                 alt="Students at school"
+                 fetchpriority="high">
+        </div>
 
-<a href="{% url 'apply' %}">Apply Online</a>
+        <div class="admissions-hero-overlay"></div>
+
+        <div class="container admissions-hero-content">
+            <span class="admissions-eyebrow">YOUR JOURNEY STARTS HERE</span>
+
+            <h1>Every great future begins with a <span>first step.</span></h1>
+
+            <p>
+                Discover the opportunities, guidance and learning
+                environment that await your child.
+            </p>
+
+            <a href="#admission-information" class="admissions-hero-link">
+                Explore admission information
+                <i class="bi bi-arrow-down"></i>
+            </a>
+        </div>
+
+        <div class="admissions-hero-index">
+            <span>ADMISSIONS</span>
+            <span>01 / 03</span>
+        </div>
+    </section>
+
+
+    <!-- INTRODUCTION -->
+    <section class="admissions-intro container" id="admission-information">
+
+        <div class="admissions-intro-label">
+            <span class="admissions-eyebrow">JOIN OUR COMMUNITY</span>
+            <div class="admissions-label-line"></div>
+        </div>
+
+        <div class="admissions-intro-content">
+            <h2>A foundation for <span>something extraordinary.</span></h2>
+
+            <p>
+                Choosing the right school is an important decision.
+                We invite you to explore our admission information
+                and take the next step towards becoming part of our
+                learning community.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- REQUIREMENTS AND FEES -->
+    <section class="admissions-details">
+        <div class="container">
+
+            <div class="admissions-details-heading">
+                <span class="admissions-eyebrow">THE ESSENTIAL DETAILS</span>
+                <h2>Everything you need to <span>know.</span></h2>
+            </div>
+
+            <div class="admissions-info-grid">
+
+                <!-- REQUIREMENTS -->
+                <article class="admissions-info-card admissions-requirements">
+
+                    <div class="admissions-info-card-top">
+                        <span class="admissions-info-icon">
+                            <i class="bi bi-journal-check"></i>
+                        </span>
+                        <span class="admissions-info-number">01</span>
+                    </div>
+
+                    <h3>Admission Requirements</h3>
+
+                    <p class="admissions-info-subtitle">
+                        What you need to know before applying.
+                    </p>
+
+                    <div class="admissions-info-body">
+                        {% if school.admission_requirements %}
+                            {{ school.admission_requirements|linebreaks }}
+                        {% else %}
+                            <p>
+                                Admission requirement information
+                                will be made available soon.
+                            </p>
+                        {% endif %}
+                    </div>
+
+                </article>
+
+
+                <!-- FEES -->
+                <article class="admissions-info-card admissions-fees">
+
+                    <div class="admissions-info-card-top">
+                        <span class="admissions-info-icon">
+                            <i class="bi bi-wallet2"></i>
+                        </span>
+                        <span class="admissions-info-number">02</span>
+                    </div>
+
+                    <h3>School Fees</h3>
+
+                    <p class="admissions-info-subtitle">
+                        Important information about school fees.
+                    </p>
+
+                    <div class="admissions-info-body">
+                        {% if school.fees_info %}
+                            {{ school.fees_info|linebreaks }}
+                        {% else %}
+                            <p>
+                                School fee information
+                                will be made available soon.
+                            </p>
+                        {% endif %}
+                    </div>
+
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- APPLICATION CALL TO ACTION -->
+    <section class="admissions-cta-section">
+        <div class="container">
+
+            <div class="admissions-cta">
+                <div class="admissions-cta-decoration"></div>
+
+                <div class="admissions-cta-content">
+                    <span class="admissions-eyebrow">TAKE THE NEXT STEP</span>
+
+                    <h2>Ready to begin your <span>journey?</span></h2>
+
+                    <p>
+                        Take the first step towards joining our school
+                        community. Start your online application today.
+                    </p>
+
+                    <a href="{% url 'apply' %}" class="admissions-cta-button">
+                        Apply Online
+                        <i class="bi bi-arrow-up-right"></i>
+                    </a>
+                </div>
+
+                <div class="admissions-cta-symbol">
+                    <i class="bi bi-mortarboard"></i>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</section>
+
 {% endblock %}
