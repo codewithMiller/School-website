@@ -1,6 +1,7 @@
 Django
 gunicorn
 python-decouple
+django-axes
 Pillow
 whitenoise
 python-dotenv

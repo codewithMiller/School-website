@@ -2,105 +2,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}{{ school.name|default:"School" }}{% endblock %}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% if school %}<style>:root{--primary:{{ school.primary_color }};--secondary:{{ school.secondary_color }};--font:{{ school.font_family }};}</style>{% endif %}
-{% if school.custom_css %}<style>{{ school.custom_css|safe }}</style>{% endif %}
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% if school %}{{ school.name }}{% else %}School{% endif %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% if school.custom_css %}<style>{{ school.custom_css|safe }}</style>{% endif %}
+  {% if school %}
+<style>
+  :root {
+    --primary: {{ school.primary_color }};
+    --secondary: {{ school.secondary_color }};
+    --font: {{ school.font_family }};
+  }
+</style>
+{% endif %}
 </head>
 <body>
 
-<div class="topbar"><div class="container">
-  <span>{% if school.phone %}<i class="bi bi-telephone"></i>{{ school.phone }}{% endif %}</span>
-  <span>
-    {% if school.email %}<a class="hide-sm" href="mailto:{{ school.email }}"><i class="bi bi-envelope"></i>{{ school.email }}</a>{% endif %}
-    {% if school.facebook %}<a href="{{ school.facebook }}" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>{% endif %}
-    {% if school.instagram %}<a href="{{ school.instagram }}" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>{% endif %}
-  </span>
-</div></div>
-
-{% with u=request.resolver_match.url_name %}
-<header class="site"><div class="container bar">
-  <a class="brand" href="{% url 'home' %}">{% if school.logo %}<img src="{{ school.logo.url }}" alt="">{% endif %}<span>{{ school.name }}</span></a>
-  <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><i class="bi bi-list"></i></button>
-  <nav class="main" id="nav" aria-label="Main">
-    <a class="link {% if u == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
-    <a class="link {% if u == 'about' %}active{% endif %}" href="{% url 'about' %}">About</a>
-    <a class="link {% if u == 'academics' %}active{% endif %}" href="{% url 'academics' %}">Academics</a>
-    <a class="link {% if u == 'admissions' %}active{% endif %}" href="{% url 'admissions' %}">Admissions</a>
-    <a class="link {% if u == 'news_list' or u == 'news_detail' %}active{% endif %}" href="{% url 'news_list' %}">News</a>
-    <a class="link {% if u == 'gallery' %}active{% endif %}" href="{% url 'gallery' %}">Gallery</a>
-    <a class="link {% if u == 'staff' %}active{% endif %}" href="{% url 'staff' %}">Staff</a>
-    <a class="link {% if u == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
+<header>
+  {% if school.logo %}<img src="{{ school.logo.url }}" alt="{{ school.name }}" height="40">{% endif %}
+  <strong>{{ school.name }}</strong>
+  <nav>
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'about' %}">About</a>
+    <a href="{% url 'academics' %}">Academics</a>
+    <a href="{% url 'admissions' %}">Admissions</a>
+    <a href="{% url 'news_list' %}">News</a>
+    <a href="{% url 'gallery' %}">Gallery</a>
+    <a href="{% url 'staff' %}">Staff</a>
+    <a href="{% url 'contact' %}">Contact</a>
+    <a href="{% url 'apply' %}">Apply Now</a>
     {% if user.is_authenticated %}
-    <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="btn btn-line" type="submit">Log out</button></form>
-    {% else %}
-    <button class="btn btn-line" type="button" data-open-login><i class="bi bi-person"></i>Staff login</button>
+    <form method="post" action="{% url 'logout' %}" style="display:inline">
+      {% csrf_token %}
+      <button type="submit">Log out</button>
+    </form>
     {% endif %}
-    <a class="btn btn-gold" href="{% url 'apply' %}">Apply now</a>
   </nav>
-</div></header>
-{% endwith %}
+</header>
 
-{% for message in messages %}<p class="alert" role="status">{{ message }}</p>{% endfor %}
+{% for message in messages %}<p class="alert">{{ message }}</p>{% endfor %}
 
 <main>
-{% block full %}<div class="container page">{% block content %}{% endblock %}</div>{% endblock %}
+  {% block content %}{% endblock %}
 </main>
 
-<footer class="site"><div class="container">
-  <div class="fgrid">
-    <div>
-      <h4>{{ school.name }}</h4>
-      <p>{{ school.tagline }}</p>
-      <div class="soc">
-        {% if school.facebook %}<a href="{{ school.facebook }}" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>{% endif %}
-        {% if school.instagram %}<a href="{{ school.instagram }}" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>{% endif %}
-      </div>
-    </div>
-    <div>
-      <h4>Explore</h4>
-      <a href="{% url 'about' %}">About us</a>
-      <a href="{% url 'admissions' %}">Admissions</a>
-      <a href="{% url 'news_list' %}">News</a>
-      <a href="{% url 'gallery' %}">Gallery</a>
-      <a href="{% url 'apply' %}">Apply online</a>
-    </div>
-    <div>
-      <h4>Visit or call</h4>
-      {% if school.address %}<p>{{ school.address }}</p>{% endif %}
-      {% if school.phone %}<a href="tel:{{ school.phone }}">{{ school.phone }}</a>{% endif %}
-      {% if school.email %}<a href="mailto:{{ school.email }}">{{ school.email }}</a>{% endif %}
-    </div>
-  </div>
-  <div class="copy">&copy; {% now "Y" %} {{ school.name }}. All rights reserved.</div>
-</div></footer>
+<footer>
+  <p>{{ school.name }}</p>
+  {% if school.phone %}<p>{{ school.phone }}</p>{% endif %}
+  {% if school.email %}<p>{{ school.email }}</p>{% endif %}
+  {% if school.address %}<p>{{ school.address }}</p>{% endif %}
+</footer>
 
-{% if school.whatsapp %}<a class="wa" href="https://wa.me/{{ school.whatsapp }}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><i class="bi bi-whatsapp"></i></a>{% endif %}
-
-{% if not user.is_authenticated %}
-<dialog id="loginModal" aria-labelledby="lmTitle">
-  <div class="m-head">
-    <button class="x" type="button" data-close aria-label="Close"><i class="bi bi-x-lg"></i></button>
-    <i class="bi bi-shield-lock" style="font-size:2rem"></i>
-    <h3 id="lmTitle">Staff login</h3>
-    <p>For school staff only. Parents do not need an account.</p>
-  </div>
-  <form class="m-body" method="post" action="{% url 'login' %}">{% csrf_token %}
-    <label for="lu">Username</label>
-    <input id="lu" name="username" required autocomplete="username">
-    <label for="lp">Password</label>
-    <input id="lp" type="password" name="password" required autocomplete="current-password">
-    <button class="btn btn-solid" type="submit" style="width:100%">Log in</button>
-  </form>
-</dialog>
+{% if school.whatsapp %}
+<a href="https://wa.me/{{ school.whatsapp }}" target="_blank" rel="noopener"
+   style="position:fixed;bottom:16px;right:16px">WhatsApp us</a>
 {% endif %}
 
-<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
