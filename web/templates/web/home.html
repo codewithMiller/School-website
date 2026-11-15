@@ -3,7 +3,7 @@
 
 <section class="hero"><div class="container">
   <div class="copy">
-    <h1>{{ school.tagline|default:school.name }}</h1>
+    <h1>{% if school.tagline %}{{ school.tagline }}{% else %}{{ school.name }}{% endif %}</h1>
     <p>{{ school.about|truncatewords:28 }}</p>
     <div class="cta">
       <a class="btn btn-solid" href="{% url 'apply' %}">Apply for a place</a>
