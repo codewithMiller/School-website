@@ -2,4 +2,5 @@ from .models import SchoolInfo
 
 
 def school_info(request):
-    return {'school': SchoolInfo.objects.first()}
+    school = SchoolInfo.objects.first() or SchoolInfo(name='Your School')
+    return {'school': school}
