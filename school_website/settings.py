@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
     'cloudinary',
     'web',
     'axes',
@@ -152,7 +153,7 @@ STORAGES = {
     "default": {"BACKEND":"django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
-if os.getenv('CLOUNDINARY_URL'):
+if os.getenv('CLOUDINARY_URL'):
     STORAGES["default"] = {"BACKEND":"cloudinary_storage.storage.MediaCloudinaryStorage"}
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
