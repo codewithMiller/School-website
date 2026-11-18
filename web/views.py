@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 from .models import (
-    Staff, SchoolClass, News, Event, GalleryImage,
+    Staff, SchoolClass, News, Event, GalleryImage,Sponsor
 )
 from .forms import ApplicationForm, ContactForm
 
@@ -63,6 +63,14 @@ def gallery(request):
 def staff(request):
     return render(request, 'web/staff.html', {'staff_list': Staff.objects.all()})
 
+def staff_detail(request, pk):
+    member = get_object_or_404(Staff, pk=pk)
+    return render(request, 'web/staff_detail.html', {'member': member})
+
+def class_details(request, slug_text):
+    school_class = get_object_or_404(SchoolClass, slug=slug_text)
+    return render(request, 'web/class_details.html', {'class': school_class})
+
 
 def contact(request):
     if request.method == 'POST':
@@ -86,7 +94,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, 'Wrong username or password.')
+            messages.success(request, 'Welcome Back!')
             return redirect(request.GET.get('next') or 'home')
         messages.error(request, 'Wrong username or password.')
 
@@ -97,3 +105,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def sponsors_view(request):
+    sponsor = Sponsor.objects.all()
+    return render(request,'web/sponsors.html',{'sponsors':sponsor})

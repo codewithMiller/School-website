@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 
 class SchoolInfo(models.Model):
@@ -55,6 +56,10 @@ class Staff(models.Model):
     photo = models.ImageField(upload_to='staff/', blank=True)
     bio = models.TextField(blank=True)
     order = models.PositiveIntegerField(default=0)
+    online_profile = models.URLField(max_length=225,blank=True,null=True)
+    qualifications = models.TextField(blank=True, help_text='One per line, e.g. B.Ed English, University of Abuja')
+    subjects = models.CharField(max_length=200, blank=True, help_text='e.g. English, Igbo')
+    experience_years = models.PositiveSmallIntegerField(null=True, blank=True)
 
     class Meta:
         ordering = ['order', 'name']
@@ -66,19 +71,51 @@ class Staff(models.Model):
 
 class SchoolClass(models.Model):
     """Used for the Academics page and the admission form dropdown."""
+    class_teacher = models.OneToOneField(Staff,on_delete=models.SET_NULL,null=True,blank=True)
+    #class captain
     name = models.CharField(max_length=80)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='classes/', blank=True)
     order = models.PositiveIntegerField(default=0)
+    slug = models.SlugField(max_length=90, unique=True, blank=True, null=True)
 
     class Meta:
         ordering = ['order']
         verbose_name_plural = 'Classes'
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.name) or 'class'
+            slug, n = base, 2
+            while SchoolClass.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{n}"
+                n += 1
+            self.slug = slug
+        super().save(*args, **kwargs)    
+
     def __str__(self):
         return self.name
+class Achievement(models.Model):
+    class Category(models.TextChoices):
+        ACADEMIC = 'ACAD','Academic Excellence'
+        COMPETITION = 'COMP','Competition & Contest'
+        LEADERSHIP = 'LEAD', 'Leadership & CITIZENSHIP'
+        SPORTS = 'SPRT','Sports & Extracurricular'
+        MILESTONE = 'MILE','Class Milestone'
 
+    school_class = models.ForeignKey(SchoolClass,on_delete=models.CASCADE,related_name='achievements')
+    title = models.CharField(max_length=225)
+    category = models.CharField( max_length=50,choices=Category.choices,default=Category.ACADEMIC)
+    description = models.TextField(blank=True)
+    date_awarded = models.DateField()
+    awarded_by = models.CharField(max_length=50,blank=True)
 
+    class Meta:
+        ordering = ['-date_awarded']
+
+    def __str__(self):
+        return f"{self.title} - {self.school_class.name}"
+    
 class News(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField()
@@ -164,3 +201,8 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f'{self.name} on {self.created:%d %b %Y}'
+
+
+class Sponsor(models.Model):
+    name = models.CharField(max_length=50)
+    logo = models.ImageField(upload_to='sponsors/', blank=True)

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
-    SchoolInfo, Staff, SchoolClass, News, Event,
-    GalleryImage, Application, ContactMessage,
+    SchoolInfo, Staff, SchoolClass, News, Event, Achievement,
+    GalleryImage, Application, ContactMessage, Sponsor
 )
 
 admin.site.site_header = 'School Admin'
@@ -23,12 +23,17 @@ class StaffAdmin(admin.ModelAdmin):
     list_display = ('name', 'role', 'order')
     list_editable = ('order',)
 
+class AchievementInline(admin.StackedInline):  # Or use admin.StackedInline for a vertical layout
+    model = Achievement
+    extra = 1  # Number of empty achievement rows displayed by default
+    # Optional: specify which fields appear in the inline table
+    # fields = ('category', 'title', 'description') 
 
 @admin.register(SchoolClass)
 class SchoolClassAdmin(admin.ModelAdmin):
     list_display = ('name', 'order')
     list_editable = ('order',)
-
+    inlines = [AchievementInline]
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
@@ -63,3 +68,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone', 'created', 'handled')
     list_filter = ('handled',)
     list_editable = ('handled',)
+
+admin.site.register(Sponsor)
+admin.site.register(Achievement)
+

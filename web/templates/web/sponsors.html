@@ -1,0 +1,76 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Our Sponsors & Partners | {{ school.name }}{% endblock %}
+
+{% block content %}
+<section class="sponsors-page-v2">
+
+  <div class="sponsors-hero">
+    <span class="sponsors-eyebrow">OUR COMMUNITY</span>
+    <h1>Partners in <span>progress.</span></h1>
+    <p>
+      We recognise and appreciate the organisations and individuals
+      whose support contributes to our school's growth and development.
+    </p>
+    <div class="sponsors-hero-line"></div>
+  </div>
+
+  {% if sponsors %}
+    <div class="sponsors-intro">
+      <div>
+        <span class="sponsors-section-label">THE PEOPLE BEHIND OUR PROGRESS</span>
+        <h2>Our valued sponsors</h2>
+      </div>
+      <span class="sponsors-count">
+        {{ sponsors|length }} partner{{ sponsors|length|pluralize }}
+      </span>
+    </div>
+
+    <div class="sponsors-grid">
+      {% for i in sponsors %}
+        <article class="sponsor-card">
+
+          <div class="sponsor-logo">
+            {% if i.logo %}
+              <img src="{{ i.logo.url }}" alt="{{ i.name }} logo" loading="lazy">
+            {% else %}
+              <span class="sponsor-logo-fallback">
+                <i class="bi bi-building"></i>
+              </span>
+            {% endif %}
+          </div>
+
+          <div class="sponsor-card-info">
+            <span>SUPPORTING PARTNER</span>
+            <h3>{{ i.name }}</h3>
+          </div>
+
+          <i class="bi bi-arrow-up-right sponsor-card-arrow"></i>
+
+        </article>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <div class="sponsors-empty">
+      <div class="sponsors-empty-icon">
+        <i class="bi bi-people"></i>
+      </div>
+      <span class="sponsors-section-label">OUR COMMUNITY</span>
+      <h2>Good things grow through support.</h2>
+      <p>
+        We look forward to recognising the individuals and organisations
+        who will become part of our school's journey.
+      </p>
+    </div>
+  {% endif %}
+
+  <div class="sponsors-closing">
+    <i class="bi bi-heart"></i>
+    <h2>Stronger together.</h2>
+    <p>Every contribution makes a difference in shaping the future of education.</p>
+  </div>
+
+</section>
+{% endblock %}

@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ class.name }} | {{ school.name }}{% endblock %}
+
+{% block content %}
+<section class="class-detail-v2">
+
+  <!-- Class hero -->
+  <div class="class-detail-hero">
+
+    {% if class.image %}
+      <div class="class-detail-hero-image">
+        <img src="{{ class.image.url }}" alt="{{ class.name }} classroom">
+      </div>
+    {% else %}
+      <div class="class-detail-hero-image class-detail-no-image">
+        <i class="bi bi-mortarboard"></i>
+      </div>
+    {% endif %}
+
+    <div class="class-detail-hero-overlay"></div>
+
+    <div class="class-detail-hero-content">
+      <span class="class-detail-eyebrow">ACADEMIC PROGRAMME</span>
+      <h1>{{ class.name }}</h1>
+
+      {% if class.description %}
+        <p>{{ class.description|truncatewords:35 }}</p>
+      {% endif %}
+
+      <a href="#class-achievements" class="class-detail-hero-link">
+        Discover their achievements
+        <i class="bi bi-arrow-down"></i>
+      </a>
+    </div>
+
+    <span class="class-detail-hero-index">OUR CLASSES</span>
+  </div>
+
+  <!-- Main content -->
+  <div class="class-detail-body">
+
+    <div class="class-detail-main">
+
+      {% if class.description %}
+        <section class="class-detail-intro">
+          <span class="class-detail-section-label">01 / THE CLASS</span>
+          <h2>A place to learn, grow and excel.</h2>
+          {{ class.description|linebreaks }}
+        </section>
+      {% endif %}
+
+      <!-- Achievements -->
+      <section class="class-achievements" id="class-achievements">
+
+        <div class="class-detail-section-heading">
+          <div>
+            <span class="class-detail-section-label">02 / RECOGNITION</span>
+            <h2>Achievements & milestones</h2>
+            <p>Celebrating the progress, dedication and accomplishments of this class.</p>
+          </div>
+          <i class="bi bi-trophy class-detail-heading-icon"></i>
+        </div>
+
+        <div class="class-achievement-list">
+
+          {% for achievement in class.achievements.all %}
+            <article class="class-achievement-card">
+
+              <div class="class-achievement-date">
+                <span>{{ achievement.date_awarded|date:"M" }}</span>
+                <strong>{{ achievement.date_awarded|date:"d" }}</strong>
+                <small>{{ achievement.date_awarded|date:"Y" }}</small>
+              </div>
+
+              <div class="class-achievement-content">
+                <span class="class-achievement-category">
+                  {{ achievement.get_category_display }}
+                </span>
+
+                <h3>{{ achievement.title }}</h3>
+
+                {% if achievement.description %}
+                  <p>{{ achievement.description }}</p>
+                {% endif %}
+
+                {% if achievement.awarded_by %}
+                  <span class="class-achievement-awarder">
+                    <i class="bi bi-patch-check"></i>
+                    Awarded by {{ achievement.awarded_by }}
+                  </span>
+                {% endif %}
+              </div>
+
+              <div class="class-achievement-icon">
+                <i class="bi bi-award"></i>
+              </div>
+
+            </article>
+
+          {% empty %}
+            <div class="class-achievement-empty">
+              <span><i class="bi bi-stars"></i></span>
+              <h3>Every achievement starts somewhere.</h3>
+              <p>There are no achievements recorded for this class yet. Check back as their journey continues.</p>
+            </div>
+          {% endfor %}
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="class-detail-sidebar">
+
+      <div class="class-teacher-card">
+
+        <span class="class-detail-section-label">THE CLASS TEACHER</span>
+
+        {% if class.class_teacher %}
+          <div class="class-teacher-photo">
+<a href="{% url 'staff_detail' class.class_teacher.pk %}">
+            {% if class.class_teacher.photo %}
+              <img src="{{ class.class_teacher.photo.url }}" alt="{{ class.class_teacher.name }}">
+            {% else %}
+              <i class="bi bi-person"></i>
+            {% endif %}
+          </div>
+
+          <h3>{{ class.class_teacher.name }}</h3>
+
+          {% if class.class_teacher.role %}
+            <p class="class-teacher-role">{{ class.class_teacher.role }}</p>
+          {% endif %}
+
+          {% if class.class_teacher.bio %}
+            <p class="class-teacher-bio">{{ class.class_teacher.bio|truncatewords:35 }}</p>
+          {% endif %}
+        </a>
+        {% else %}
+
+          <div class="class-teacher-unassigned">
+            <i class="bi bi-person-plus"></i>
+            <p>A class teacher has not been assigned yet.</p>
+          </div>
+
+        {% endif %}
+
+      </div>
+
+      <div class="class-detail-sidebar-note">
+        <i class="bi bi-lightbulb"></i>
+        <h3>Learning goes beyond the classroom.</h3>
+        <p>Every lesson, activity and experience is an opportunity to discover something new.</p>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- Closing section -->
+  <div class="class-detail-closing">
+    <span>LEARNING. GROWTH. ACHIEVEMENT.</span>
+    <h2>Every student has a story worth celebrating.</h2>
+    <a href="{% url 'contact' %}" class="btn btn-solid">
+      Contact the school <i class="bi bi-arrow-up-right"></i>
+    </a>
+  </div>
+
+</section>
+{% endblock %}
