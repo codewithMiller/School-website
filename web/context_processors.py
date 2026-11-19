@@ -1,6 +1,12 @@
-from .models import SchoolInfo
+
+from .models import SchoolInfo, Sponsor
 
 
 def school_info(request):
     school = SchoolInfo.objects.first() or SchoolInfo(name='Your School')
-    return {'school': school}
+    sponsors = Sponsor.objects.all()
+
+    return {
+        'school': school,
+        'sponsors': sponsors,
+    }

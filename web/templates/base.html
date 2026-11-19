@@ -79,6 +79,26 @@
       {% if school.email %}<a href="mailto:{{ school.email }}">{{ school.email }}</a>{% endif %}
     </div>
   </div>
+
+{% if school.logo or sponsors %}
+  <div class="footer-partners">
+    <a href="{% url 'sponsors' %}" class="footer-partners-link" aria-label="Meet our sponsors and partners">
+
+      {% if school.logo %}
+        <img src="{{ school.logo.url }}" alt="{{ school.name }} logo" loading="lazy">
+      {% endif %}
+
+      {% for sponsor in sponsors %}
+        {% if sponsor.logo %}
+          <img src="{{ sponsor.logo.url }}" alt="Sponsor logo" loading="lazy">
+        {% endif %}
+      {% endfor %}
+
+    </a>
+  </div>
+{% endif %}
+
+
   <div class="copy">&copy; {% now "Y" %} {{ school.name }}. All rights reserved.</div>
 </div></footer>
 
